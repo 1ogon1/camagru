@@ -43,14 +43,15 @@
                         if (!strcmp($row['active'], "1")) {
                             $find = 1;
                         } else {
-                            $errors[] = "/Account is not activate./";
+                            $errors[] = "Account is not activate.";
                         }
                     } else {
                         $errors[] = "Wrong password.";
                     }
-                } else {
-                    $errors[] = "Wrong login.";
                 }
+            }
+            if (!$find) {
+                $errors[] = "Wrong login.";
             }
             if ($find === 1) {
                 $_SESSION['login'] = $_POST['login'];
@@ -58,8 +59,8 @@
             }
             else {
                 echo '<div style="color: red">' . array_shift($errors) . '</div>' .
-                    '<script>var elem = document.getElementById("forma");' .
-                    'elem.style.display = \'block\';</script>';
+                     '<script>var elem = document.getElementById("forma");' .
+                     'elem.style.display = \'block\';</script>';
             }
         }
         ?>
