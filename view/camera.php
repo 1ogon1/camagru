@@ -9,16 +9,16 @@ if (isset($_POST['image'])) {
     $img = str_replace(' ', '+', $img);
     $data = base64_decode($img);
     $img_name = $_SESSION['login'].'.png';
-//    if (get_img_id_by_name($img_name)) {
-//        $counter = 1;
-//        while (get_img_id_by_name($counter.$img_name))
-//            $counter++;
-//        $img_name = $counter.$img_name;
-//    }
+    if (get_name_img($img_name)) {
+        $counter = 1;
+        while (get_name_img($counter.$img_name))
+            $counter++;
+        $img_name = $counter.$img_name;
+    }
     $file = $upload_dir.$img_name;
     $success = file_put_contents($file, $data);
-//    add_image($_SESSION['logged_user_id'], $img_name);
-//    header("Location: camera.php");
+    add_img_to_base($_SESSION['login'], $img_name, $file);
+    header("Location: camera.php");
 }
 ?>
 <!DOCTYPE html>

@@ -176,3 +176,12 @@ body {
     width: 70px;
     height: 45px;
 }
+
+.galery {
+    position: absolute;
+    width: 700px;
+    height: 500px;
+    top: 230px;
+    left: 150px;
+    outline: 2px red solid;
+}

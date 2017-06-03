@@ -1,4 +1,8 @@
-<?php require_once "../config/setup.php";?>
+<?php require_once "../config/setup.php";
+if (!isset($_SESSION['login'])) {
+    header("Location: index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -28,15 +32,21 @@
 <!--        <input type="submit" value="submit"></form>-->
 <!--</div>-->
 
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+<div class="galery">
+    <?php
+        $res = $pdo->query(SQL_GET_ALL_IMG, PDO::FETCH_ASSOC);
+        foreach ($res as $row) {
+            echo '<img src="'.$res['path'].'"';
+        }
+    ?>
+</div>
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 <script src="../js/js.js"></script>
 </body>
 </html>
 
 <?php
-if (!isset($_SESSION['login'])) {
-    header("Location: index.php");
-}
 //if ($_POST['submit']) {
     $uploaddir = '../foto/';
     $uploadfile = $uploaddir . basename($_FILES['uploadfile']['name']);
