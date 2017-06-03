@@ -47,7 +47,7 @@ if (isset($_POST['image'])) {
 </head>
 <body>
 
-<div id="allow">▲ ▲ ▲ Разрешите использовать камеру ▲ ▲ ▲ <br/> ( Сверху текущей страницы )</div>
+<div id="allow">▲ ▲ ▲ Разрешите использовать камеру ▲ ▲ ▲<br/> ( Сверху текущей страницы )</div>
 <div class="item">
     <span> video </span>
     <video id="video" width="320" height="240" autoplay="autoplay" ></video>

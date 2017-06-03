@@ -19,6 +19,7 @@
                 <li><a href="index.php">Home</a></li>
                 <li><a href="galery.php">Galery</a></li>
             </ul>
+            <img src="../img/default-avatar.png" class="avatar">
         <?php else : ?>
             <ul type="none" class="menu">
                 <li class="active" id="show">Login</li>
@@ -27,7 +28,6 @@
                 <li><a href="galery.php">Galery</a></li>
             </ul>
         <?php endif; ?>
-        <img src="../img/default-avatar.png" class="avatar">
     </div>
     <form action="index.php" method="post" class="login_form" id="forma">
         <?php
@@ -71,6 +71,10 @@
         <br />
         <input type="submit" name="submit" value="OK">
     </form>
+</div>
+<div class="footer">
+    <hr>
+    <p>&copy;rkonoval 2017</p>
 </div>
 <script src="../js/js.js"></script>
 </body>

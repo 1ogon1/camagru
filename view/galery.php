@@ -22,11 +22,11 @@
         <img src="../img/default-avatar.png" class="avatar">
     </div>
 </div>
-<div class="download">
-    <form action="galery.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="uploadfile">
-        <input type="submit" value="submit"></form>
-</div>
+<!--<div class="download">-->
+<!--    <form action="galery.php" method="post" enctype="multipart/form-data">-->
+<!--        <input type="file" name="uploadfile">-->
+<!--        <input type="submit" value="submit"></form>-->
+<!--</div>-->
 
 
 <script src="../js/js.js"></script>

@@ -6,8 +6,22 @@
     <link href="../style/style.css" rel="stylesheet">
 </head>
 <body>
+<div class="header">
+    <div class="logo">
+        <a href="index.php" title="home"><img src="../img/couv_web.png" class="web" alt="home"></a>
+    </div>
+    <div class="block_menu">
+        <ul type="none" class="menu">
+            <li><a href="index.php">Home</a></li>
+        </ul>
+    </div>
+</div>
+<div class="register_form">
+    <form action="register.php" method="post" class="form">
 <?php
-if ((isset($_POST['logon']) && $_POST['logon'] !== "") && (isset($_POST['passwordd']) && $_POST['passwordd'] !== "")) {
+if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
+    (isset($_POST['password']) && $_POST['password'] !== "") &&
+    (isset($_POST['conf_password']) && $_POST['conf_password'] !== "")) {
     try {
         require_once "../config/setup.php";
         $flag = 1;
@@ -18,9 +32,13 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") && (isset($_POST['passwor
                 $flag = 0;
                 $errors[] = "Login already exists";
             }
+            if (strcmp($_POST['password'], $_POST['conf_password'])) {
+                $flag = 0;
+                $errors[] = "Passwords do not match";
+            }
         }
         if ($flag) {
-            $passwd = hash("whirlpool", $_POST['passwordd']);
+            $passwd = hash("whirlpool", $_POST['password']);
             $pdo->exec("INSERT INTO log_pas (login, password, active) VALUES ('$_POST[logon]', '$passwd', 0)");
             $login = hash("md5", $_POST['logon']);
             $pdo->exec("INSERT INTO activate (login, login_activate) VALUES ('$_POST[logon]', '$login')");
@@ -43,14 +61,18 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") && (isset($_POST['passwor
     }
 }
 ?>
-<div><a href="index.php" style="color: white">HOME</a></div>
-<form action="register.php" method="post" style="text-align: center">
-    <input type="text" name="logon" value="" placeholder="login" required />
-    <br />
-    <input type="password" name="passwordd" value="" placeholder="password" required />
-    <br />
-    <input type="submit" name="submit" value="OK">
-</form>
-
+        <input type="text" name="logon" value="" placeholder="login" required>
+        <br>
+        <input type="password" name="password" value="" placeholder="password" required>
+        <br>
+        <input type="password" name="conf_password" value="" placeholder="confirm password" required>
+        <br>
+        <input type="button" name="submit" value="Register" class="submit">
+    </form>
+</div>
+<div class="footer">
+    <hr>
+    <p>&copy;rkonoval 2017</p>
+</div>
 </body>
 </html>
