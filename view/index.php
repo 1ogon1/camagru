@@ -36,7 +36,7 @@
             $find = 0;
             $errors  = array();
             $passwd = hash("whirlpool", $_POST['password']);
-            $res = $pdo->query("SELECT * FROM log_pas", PDO::FETCH_ASSOC);
+            $res = $pdo->query(SQL_GET_LOGIN, PDO::FETCH_ASSOC);
             foreach ($res as $row) {
                 if (!strcmp($row['login'], $login)) {
                     if (!strcmp($row['password'], $passwd)) {

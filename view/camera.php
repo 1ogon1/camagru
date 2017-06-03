@@ -8,8 +8,7 @@ if (isset($_POST['image'])) {
     $img = str_replace('data:image/png;base64,', '', $img);
     $img = str_replace(' ', '+', $img);
     $data = base64_decode($img);
-//    $img_name = $_SESSION['login'].'.png';
-    $img_name = 'name.png';
+    $img_name = $_SESSION['login'].'.png';
 //    if (get_img_id_by_name($img_name)) {
 //        $counter = 1;
 //        while (get_img_id_by_name($counter.$img_name))

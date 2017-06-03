@@ -26,7 +26,7 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
         require_once "../config/setup.php";
         $flag = 1;
         $errors = array();
-        $res = $pdo->query("SELECT login FROM log_pas", PDO::FETCH_ASSOC);
+        $res = $pdo->query(SQL_GET_LOGIN, PDO::FETCH_ASSOC);
         foreach ($res as $row) {
             if (!strcmp($row['login'], $_POST['logon'])) {
                 $flag = 0;
@@ -39,9 +39,19 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
         }
         if ($flag) {
             $passwd = hash("whirlpool", $_POST['password']);
-            $pdo->exec("INSERT INTO log_pas (login, password, active) VALUES ('$_POST[logon]', '$passwd', 0)");
+            $stmt = $pdo->prepare(SQL_CREATE_USER);
+            $stmt->execute([
+                $_POST['logon'],
+                $passwd,
+                0
+            ]);
             $login = hash("md5", $_POST['logon']);
-            $pdo->exec("INSERT INTO activate (login, login_activate) VALUES ('$_POST[logon]', '$login')");
+//            $pdo->exec("INSERT INTO activate (login, login_activate) VALUES ('$_POST[logon]', '$login')");
+            $stmt = $pdo->prepare(SQL_ACTIVATE_LINK);
+            $stmt->execute([
+                $_POST['logon'],
+                $login
+            ]);
             $email = 'konovalenkoruslan@gmail.com';
             $headers = "Content-Type: text/html; charset=utf-8"."\r\n";
             $subject = "Camagru Account Activation";
@@ -67,7 +77,7 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
         <br>
         <input type="password" name="conf_password" value="" placeholder="confirm password" required>
         <br>
-        <input type="button" name="submit" value="Register" class="submit">
+        <input type="submit" name="submit" value="Register" class="submit">
     </form>
 </div>
 <div class="footer">
