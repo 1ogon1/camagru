@@ -19,13 +19,18 @@
                 <li><a href="index.php">Home</a></li>
                 <li><a href="galery.php">Galery</a></li>
             </ul>
-            <img src="../img/default-avatar.png" class="avatar">
+            <?php
+                $login = $_SESSION['login'];
+                $res = $pdo->query("SELECT logo FROM log_pas WHERE login = '$login'", PDO::FETCH_ASSOC);
+                foreach ($res as $row) {
+                    echo '<a href="profile.php"><img src="'.$row['logo'].'" class="avatar"></a>';
+                }
+            ?>
         <?php else : ?>
             <ul type="none" class="menu">
                 <li class="active" id="show">Login</li>
                 <li><a href="register.php">Register</a></li>
                 <li><a href="index.php">Home</a></li>
-<!--                <li><a href="galery.php">Galery</a></li>-->
             </ul>
         <?php endif; ?>
     </div>

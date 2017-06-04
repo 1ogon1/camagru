@@ -5,6 +5,7 @@ const SQL_CREATE_TABLE_LP = '
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
       login VARCHAR(255) NOT NULL,
       password VARCHAR(255) NOT NULL,
+      logo VARCHAR(255) NOT NULL,
       active INT(10) NOT NULL
       )
 ';
@@ -35,7 +36,7 @@ const SQL_GET_ACTIVE = '
 ';
 
 const SQL_CREATE_USER = '
-    INSERT INTO log_pas (login, password, active) VALUES (?, ?, ?)
+    INSERT INTO log_pas (login, password, logo, active) VALUES (?, ?, ?, ?)
 ';
 
 const SQL_ACTIVATE_LINK = '
@@ -60,6 +61,14 @@ const SQL_ADD_IMAGE = '
 
 const SQL_GET_ALL_IMG = '
     SELECT path FROM images
+';
+
+const SQL_GET_USER_IMG = '
+    SELECT path FROM images WHERE login = ?
+';
+
+const SQL_SET_USER_LOGO = '
+    UPDATE log_pas SET path = :path WHERE login = :login
 ';
 
 ?>

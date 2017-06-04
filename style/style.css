@@ -174,7 +174,7 @@ body {
 .form .submit {
     font-size: 15px;
     width: 70px;
-    height: 45px;
+    height: 25px;
 }
 
 .galery {
@@ -183,5 +183,26 @@ body {
     height: 500px;
     top: 230px;
     left: 150px;
+    outline: 2px red solid;
+}
+
+h3 {
+    color: white;
+}
+
+.user_img {
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    top: 230px;
+    left: 900px;
+    outline: 2px white solid;
+}
+
+.profile_settings {
+    position: absolute;
+    top: 230px;
+    width: 100%;
+    height: auto;
     outline: 2px red solid;
 }

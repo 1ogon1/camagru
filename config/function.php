@@ -22,4 +22,13 @@ require_once "setup.php";
         ]);
     }
 
+//    function get_logo_image($login) {
+//        global $pdo;
+//
+//        $stmt = $pdo->prepare(SQL_GET_USER_LOGO);
+//        $stmt->execute($login);
+//        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+//        return $res[0];
+//    }
+
 ?>

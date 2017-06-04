@@ -38,11 +38,13 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
             }
         }
         if ($flag) {
+            $default = '../img';
             $passwd = hash("whirlpool", $_POST['password']);
             $stmt = $pdo->prepare(SQL_CREATE_USER);
             $stmt->execute([
                 $_POST['logon'],
                 $passwd,
+                $default,
                 0
             ]);
             $login = hash("md5", $_POST['logon']);
