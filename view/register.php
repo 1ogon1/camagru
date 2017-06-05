@@ -38,7 +38,7 @@ if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
             }
         }
         if ($flag) {
-            $default = '../img';
+            $default = '../img/default-avatar.png';
             $passwd = hash("whirlpool", $_POST['password']);
             $stmt = $pdo->prepare(SQL_CREATE_USER);
             $stmt->execute([

@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Architects+Daughter');
 
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     width: 100%;
     height: 100%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: url("../img/COLOURlovers.com-Background1.jpg");
     position: absolute;
     font-family: 'Architects Daughter', cursive;
@@ -205,4 +205,123 @@ h3 {
     width: 100%;
     height: auto;
     outline: 2px red solid;
+}
+
+.foto_galery {
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+}
+
+.foto_galery img {
+    width: 100px;
+    height: 100px;
+}
+
+.show_img {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    position: absolute;
+    z-index: 3;
+    display: block;
+
+}
+
+.img {
+    position: absolute;
+    top: 100px;
+    left: 300px;
+}
+
+.img img {
+    width: 700px;
+    height: 500px;
+}
+
+.hide_img {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    /*border: 3px white solid;*/
+    /*border-radius: 50%;*/
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.hide_img img{
+    width: 100px;
+    height: 100px;
+}
+
+.comment {
+    outline: 2px white solid;
+    position: absolute;
+    left: 1200px;
+    top: 100px;
+    width: 200px;
+    height: auto;
+    text-align: left;
+}
+
+.add_comment {
+    position: relative;
+    display: block;
+}
+
+.show_comment {
+    display: block;
+    position: relative;
+}
+
+.show_comment p {
+    display: block;
+    color: white;
+}
+
+.comment_login {
+    width: auto;
+    height: auto;
+    /*outline: 2px red solid;*/
+}
+
+.comment_message {
+    width: auto;
+    height: auto;
+    border-bottom: 1px blue solid;
+    margin-left: 20px;
+}
+
+.like {
+    position: absolute;
+    top: 620px;
+    left: 950px;
+    color: white;
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.like input {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    font-size: 25px;
+    font-family: 'Architects Daughter', cursive;
+}
+
+.like input {
+    width: 45px;
+    height: 25px;
+    margin-top: 5px;
+    background-image: url("../img/like.png");
+}
+
+.image_submit {
+    
 }

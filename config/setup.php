@@ -9,6 +9,8 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->exec(SQL_CREATE_TABLE_LP);
 $pdo->exec(SQL_CREATE_TABLE_IMG);
 $pdo->exec(SQL_CREATE_TABLE_ACT);
+$pdo->exec(SQL_CREATE_TABLE_COMMENT);
+$pdo->exec(SQL_CREATE_TABLE_LIKES);
 
 session_start();
 ?>

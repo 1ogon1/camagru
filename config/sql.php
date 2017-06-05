@@ -27,6 +27,23 @@ const SQL_CREATE_TABLE_ACT = '
       )
 ';
 
+const SQL_CREATE_TABLE_COMMENT = '
+    CREATE TABLE IF NOT EXISTS comment (
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      img VARCHAR (255) NOT NULL,
+      login VARCHAR(255) NOT NULL,
+      message VARCHAR (255) NOT NULL
+    )
+';
+
+const SQL_CREATE_TABLE_LIKES = '
+    CREATE TABLE IF NOT EXISTS likes (
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      img VARCHAR (255) NOT NULL,
+      login VARCHAR(255) NOT NULL
+    )
+';
+
 const SQL_GET_LOGIN = '
     SELECT * FROM log_pas
 ';
@@ -60,15 +77,35 @@ const SQL_ADD_IMAGE = '
 ';
 
 const SQL_GET_ALL_IMG = '
-    SELECT path FROM images
+    SELECT path, name FROM images ORDER BY id DESC
 ';
 
 const SQL_GET_USER_IMG = '
-    SELECT path FROM images WHERE login = ?
+    SELECT path FROM images WHERE login = ?  ORDER BY id DESC
 ';
 
 const SQL_SET_USER_LOGO = '
     UPDATE log_pas SET path = :path WHERE login = :login
+';
+
+const SQL_ADD_COMMENT = '
+    INSERT INTO comment (img, login, message) VALUES (?, ?, ?)
+';
+
+const SQL_GET_COMMENT = '
+    SELECT * FROM comment WHERE img = ? ORDER BY id DESC
+';
+
+const SQL_GET_LIKE = '
+    SELECT * FROM likes WHERE img = ?
+';
+
+const SQL_ADD_LIKE = '
+    INSERT INTO likes (img, login) VALUES (?, ?)
+';
+
+const SQL_DELETE_LIKE = '
+    DELETE FROM likes WHERE (img = :img, login = :login)
 ';
 
 ?>

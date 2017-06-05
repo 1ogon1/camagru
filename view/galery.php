@@ -1,23 +1,80 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Galery</title>
-<!--    <link href="../style/style.css" rel="stylesheet">-->
-    <link href="../style/style.css" rel="stylesheet">
-</head>
-<body>
 <?php require_once "../config/setup.php";
 if (!isset($_SESSION['login'])) {
     header("Location: index.php");
 }
 ?>
+
+<?php
+if (isset($_POST['add'])) {
+    $stmt = $pdo->prepare(SQL_ADD_COMMENT);
+    $stmt->execute([
+        $_GET['img'],
+        $_SESSION['login'],
+        $_POST['texta']
+    ]);
+}
+?>
+<?php if (isset($_GET['img'])) : ?>
+    <div class="show_img">
+        <div class="img">
+            <img src="../foto/<?php echo $_GET['img']; ?>">
+        </div>
+        <div class="like">
+<!--            <a href="galery.php?img=--><?php //echo $_GET['img']; ?><!--"><img src="../img/like.png"></a>-->
+            <form method="post" action="galery.php?img=<?php echo $_GET['img']; ?>">
+                <p>
+                    <input type="image" name="likes" src="../img/like.png" border="0">
+                </p>
+                <p>
+
+                <?php
+                if (isset($_POST['likes'])) {
+                    $counter = 1;
+                    echo $counter;
+                }
+                ?>
+                </p>
+            </form>
+        </div>
+        <div class="comment">
+            <div class="show_comment">
+                <?php
+                $res = $pdo->prepare(SQL_GET_COMMENT);
+                $res->execute([$_GET['img']]);
+                foreach ($res as $row) {
+                    echo '<p class="comment_login">'.$row['login'].'</p><p class="comment_message">'.$row['message'].'</p>';
+                }
+                ?>
+            </div>
+            <div class="add_comment">
+                <form method="post" action="galery.php?img=<?php echo $_GET['img']; ?>">
+                    <textarea rows="3" cols="25" name="texta" placeholder="Add your comment" required></textarea><br>
+                    <input type="submit" name="add" value="send">
+                </form>
+            </div>
+        </div>
+        <div class="hide_img">
+            <a href="galery.php">
+                <img src="../img/close.png">
+            </a>
+        </div>
+    </div>
+<?php endif; ?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Galery</title>
+    <link href="../style/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
 <div class="header">
     <div class="logo">
         <a href="index.php" title="home"><img src="../img/couv_web.png" class="web" alt="home"></a>
     </div>
     <div class="block_menu">
-        <ul type="none" cjlass="menu">
+        <ul type="none" class="menu">
             <li><?php echo $_SESSION['login']; ?></li>
             <li><a href="logout.php">Loguot</a></li>
             <li><a href="index.php">Home</a></li>
@@ -44,7 +101,7 @@ if (!isset($_SESSION['login'])) {
     <?php
         $res = $pdo->query(SQL_GET_ALL_IMG, PDO::FETCH_ASSOC);
         foreach ($res as $row) {
-            echo '<img src="'.$row['path'].'">';
+            echo '<div class="foto_galery"><a href="galery.php?img='.$row['name'].'"><img src="'.$row['path'].'"></a></div>';
         }
     ?>
 </div>
@@ -54,15 +111,16 @@ if (!isset($_SESSION['login'])) {
         $stmt = $pdo->prepare(SQL_GET_USER_IMG);
         $stmt->execute([$_SESSION['login']]);
         foreach ($stmt as $row) {
-            echo '<img src="'.$row['path'].'">';
+            echo '<img src="'.$row['path'].'" class="foto_galery">';
         }
     ?>
 </div>
 <div class="footer">
     <hr>
-    <p>&copy;rkonoval 2017</p>
+    <p>Camagru &copy;rkonoval 2017</p>
 </div>
 <script src="../js/js.js"></script>
+
 </body>
 </html>
 
