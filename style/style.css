@@ -199,14 +199,6 @@ h3 {
     outline: 2px white solid;
 }
 
-.profile_settings {
-    position: absolute;
-    top: 230px;
-    width: 100%;
-    height: auto;
-    outline: 2px red solid;
-}
-
 .foto_galery {
     margin: 5px;
     width: 100px;
@@ -324,4 +316,45 @@ h3 {
 
 .image_submit {
     
+}
+
+.profile_settings {
+    position: absolute;
+    top: 230px;
+    left: 50px;
+    width: 350px;
+    height: auto;
+    outline: 2px red solid;  }
+
+.select_section {
+    font-size: 40px;
+    color: white;
+}
+
+.select_section li {
+    margin-bottom: 20px;
+    cursor: pointer;
+    display: block;
+}
+
+.select_section li:hover {
+    margin-left: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#password_block {
+    position: absolute;
+    top: 230px;
+    left: 450px;
+    width: 700px;
+    height: 500px;
+    outline: 2px white solid;
+    display: none;
+}
+
+.change_password {
+    outline: 2px red solid;
+    position: absolute;
+    top: 20px;
+    left: 20px;
 }

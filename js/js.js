@@ -1,6 +1,7 @@
 var visible = document.getElementById("show");
 var hidden = document.getElementById("close");
-var hidden_img = document.getElementById("close_img");
+var password = document.getElementById("ch_password");
+
 visible.onclick = function () {
     var elem = document.getElementById("forma");
     elem.style.display = 'block';
@@ -9,4 +10,9 @@ visible.onclick = function () {
 hidden.onclick = function () {
     var elem = document.getElementById("forma");
     elem.style.display = 'none';
+};
+
+password.onclick = function () {
+    var elem = document.getElementById("password_block");
+    elem.style.display = 'block';
 };

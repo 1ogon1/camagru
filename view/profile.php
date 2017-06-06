@@ -1,3 +1,5 @@
+<?php require_once "../config/setup.php" ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -11,7 +13,6 @@
         <a href="index.php" title="home"><img src="../img/couv_web.png" class="web" alt="home"></a>
     </div>
     <div class="block_menu">
-        <?php require_once "../config/setup.php" ?>
         <ul type="none" class="menu">
             <li><?php echo $_SESSION['login']; ?></li>
             <li><a href="logout.php">Loguot</a></li>
@@ -28,35 +29,39 @@
     </div>
 </div>
 <div class="profile_settings">
-    <h2>Chande your logo</h2>
-    <div class="download">
-        <form action="profile.php" method="post" enctype="multipart/form-data">
-            <input type="file" name="uploadfile">
-            <input type="submit" value="submit"></form>
-    </div>
+    <ul class="select_section" type="none">
+        <li id="ch_password">Change password</li>
+        <li id="logo">Change logo</li>
+        <li id="delete_photo">Delete photo</li>
+    </ul>
+</div>
+<div id="password_block">
+    <form method="post" action="profile.php" class="change_password">
+        <?php
+        if (isset($_POST['submit'])) {
+            $old_pw = hash("whirlpool", $_POST['old_pw']);
+            $new_pw1 = $_POST['new_pw1'];
+            $new_pw2 = $_POST['new_pw2'];
+            echo '<script> var elem = document.getElementById("password_block");elem.style.display = \'block\';</script>';
+        }
+        ?>
+        <input type="password" name="old_pw" value="" required placeholder="old password"><br>
+        <input type="password" name="new_pw1" value="" required placeholder="new password"><br>
+        <input type="password" name="new_pw2" value="" required placeholder="conform password"><br>
+        <input type="submit" name="submit">
+    </form>
 </div>
 <div class="footer">
     <hr>
     <p>&copy;rkonoval 2017</p>
 </div>
 <script src="../js/js.js"></script>
+<script>
+    var password = document.getElementById("ch_password");
+    password.onclick = function () {
+        var elem = document.getElementById("password_block");
+        elem.style.display = 'block';
+    };
+</script>
 </body>
 </html>
-
-<?php
-if (isset($_POST['submit']))
-{
-    $login = $_SESSION['login'];
-    $uploaddir = '../foto/';
-    $uploadfile = $uploaddir.basename($_FILES['uploadfile']['name']);
-
-    $stmt = $pdo->prepare(SQL_SET_USER_LOGO);
-    $stmt->execute([
-        ':login' => $login,
-        ':path' => $uploadfile
-    ]);
-}
-//if (copy($_FILES['uploadfile']['tmp_name'], $uploadfile)) {
-//    echo "<h3>Файл успешно загружен на сервер</h3>";
-//}
-?>
