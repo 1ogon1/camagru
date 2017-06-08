@@ -28,7 +28,7 @@
             ?>
         <?php else : ?>
             <ul type="none" class="menu">
-                <li class="active" id="show">Login</li>
+                <li class="active" id="show" onclick="open_login()">Login</li>
                 <li><a href="register.php">Register</a></li>
                 <li><a href="index.php">Home</a></li>
             </ul>
@@ -69,7 +69,7 @@
             }
         }
         ?>
-        <div id="close"><img src="../img/close.gif"></div>
+        <div id="close" onclick="close_login()"><img src="../img/close.gif"></div>
         <input type="text" name="login" value="" placeholder="login" required />
         <br />
         <input type="password" name="password" value="" placeholder="password" required />
@@ -79,7 +79,7 @@
 </div>
 <div class="footer">
     <hr>
-    <p>&copy;rkonoval 2017</p>
+    <p>Camagru &copy;rkonoval 2017</p>
 </div>
 <script src="../js/js.js"></script>
 </body>

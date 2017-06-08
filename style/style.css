@@ -183,7 +183,7 @@ body {
     height: 500px;
     top: 230px;
     left: 150px;
-    outline: 2px red solid;
+    /*outline: 2px red solid;*/
 }
 
 h3 {
@@ -196,18 +196,18 @@ h3 {
     height: 500px;
     top: 230px;
     left: 900px;
-    outline: 2px white solid;
+    /*outline: 2px white solid;*/
 }
 
 .foto_galery {
     margin: 5px;
-    width: 100px;
+    width: 120px;
     height: 100px;
     display: inline-block;
 }
 
 .foto_galery img {
-    width: 100px;
+    width: 120px;
     height: 100px;
 }
 
@@ -250,7 +250,7 @@ h3 {
 }
 
 .comment {
-    outline: 2px white solid;
+    /*outline: 2px white solid;*/
     position: absolute;
     left: 1200px;
     top: 100px;
@@ -297,25 +297,9 @@ h3 {
     padding: 0;
 }
 
-.like input {
-    background-color: rgba(0, 0, 0, 0.7);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    color: white;
-    font-size: 25px;
-    font-family: 'Architects Daughter', cursive;
-}
-
-.like input {
-    width: 45px;
-    height: 25px;
-    margin-top: 5px;
-    background-image: url("../img/like.png");
-}
-
-.image_submit {
-    
+.like img {
+    width: 35px;
+    height: 35px;
 }
 
 .profile_settings {
@@ -324,7 +308,13 @@ h3 {
     left: 50px;
     width: 350px;
     height: auto;
-    outline: 2px red solid;  }
+    /*outline: 2px red solid;*/
+}
+
+.profile_settings a {
+    text-decoration: none;
+    color: white;
+}
 
 .select_section {
     font-size: 40px;
@@ -342,19 +332,102 @@ h3 {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-#password_block {
+.block {
     position: absolute;
     top: 230px;
     left: 450px;
     width: 700px;
     height: 500px;
-    outline: 2px white solid;
-    display: none;
+    /*outline: 2px white solid;*/
 }
 
 .change_password {
-    outline: 2px red solid;
+    /*outline: 2px red solid;*/
     position: absolute;
     top: 20px;
     left: 20px;
+    width: auto;
+    height: auto;
+}
+
+.delete_img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: block;
+}
+
+.default {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+.default a {
+    text-decoration: none;
+    color: white;
+}
+
+.image {
+    width: 120px;
+    height: 100px;
+    margin: 5px;
+}
+.item {
+    position: absolute;
+    top: 350px;
+    left: 10px;
+    /*outline: 2px red solid;*/
+}
+
+.can {
+    position: absolute;
+    top: 350px;
+    left: 350px;
+    /*outline: 1px white solid;*/
+}
+
+#video {
+    transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+}
+#hat {
+    transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+}
+
+.img_png {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 130px;
+    left: 130px;
+    display: none;
+    margin: 0;
+    padding: 0;
+}
+
+.click {
+    position: absolute;
+    top: 230px;
+    left: 20px;
+    width: auto;
+    height: auto;
+}
+
+.click img {
+    width: 100px;
+    height: 100px;
+    transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
 }

@@ -5,6 +5,34 @@ if (!isset($_SESSION['login'])) {
 ?>
 
 <?php
+if (isset($_GET['like'])) {
+    $flag = 0;
+    $id = 0;
+    $img = $_GET['img'];
+    $res = $pdo->prepare(SQL_GET_ALL_LIKES);
+    $res->execute([$_GET['img']]);
+    foreach ($res as $row) {
+        if (!(strcmp($row['login'], $_SESSION['login']))) {
+            $flag = 1;
+            $id = $row['id'];
+        }
+    }
+    if ($flag) {
+        $res = $pdo->prepare(SQL_DELETE_LIKE);
+        $res->execute([$id]);
+    }
+    if (!$flag) {
+        $res = $pdo->prepare(SQL_ADD_LIKE);
+        $res->execute([
+            $_GET['img'],
+            $_SESSION['login']
+        ]);
+    }
+    header("location:galery.php?img=$img");
+}
+?>
+
+<?php
 if (isset($_POST['add'])) {
     $stmt = $pdo->prepare(SQL_ADD_COMMENT);
     $stmt->execute([
@@ -18,23 +46,6 @@ if (isset($_POST['add'])) {
     <div class="show_img">
         <div class="img">
             <img src="../foto/<?php echo $_GET['img']; ?>">
-        </div>
-        <div class="like">
-<!--            <a href="galery.php?img=--><?php //echo $_GET['img']; ?><!--"><img src="../img/like.png"></a>-->
-            <form method="post" action="galery.php?img=<?php echo $_GET['img']; ?>">
-                <p>
-                    <input type="image" name="likes" src="../img/like.png" border="0">
-                </p>
-                <p>
-
-                <?php
-                if (isset($_POST['likes'])) {
-                    $counter = 1;
-                    echo $counter;
-                }
-                ?>
-                </p>
-            </form>
         </div>
         <div class="comment">
             <div class="show_comment">
@@ -51,6 +62,22 @@ if (isset($_POST['add'])) {
                     <textarea rows="3" cols="25" name="texta" placeholder="Add your comment" required></textarea><br>
                     <input type="submit" name="add" value="send">
                 </form>
+            </div>
+        </div>
+        <div class="like">
+            <div>
+                <a href="galery.php?img=<?php echo $_GET['img']; ?>&like=set"><img src="../img/like.png"></a>
+                <?php
+                $i = 0;
+                $res = $pdo->prepare(SQL_GET_ALL_LIKES);
+                $res->execute([$_GET['img']]);
+                foreach ($res as $row) {
+                    if (!(strcmp($row['img'], $_GET['img']))) {
+                        $i++;
+                    }
+                }
+                echo $i;
+                ?>
             </div>
         </div>
         <div class="hide_img">
@@ -111,7 +138,7 @@ if (isset($_POST['add'])) {
         $stmt = $pdo->prepare(SQL_GET_USER_IMG);
         $stmt->execute([$_SESSION['login']]);
         foreach ($stmt as $row) {
-            echo '<img src="'.$row['path'].'" class="foto_galery">';
+            echo '<div class="foto_galery"><a href="galery.php?img='.$row['name'].'"><img src="'.$row['path'].'"></a></div>';
         }
     ?>
 </div>

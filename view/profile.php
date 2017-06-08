@@ -1,4 +1,158 @@
-<?php require_once "../config/setup.php" ?>
+<?php require_once "../config/setup.php"; ?>
+
+<?php
+if (isset($_GET['photo'])) {
+    if (!strcmp($_GET['photo'], "default")) {
+        $photo = '../img/default-avatar.png';
+        $res = $pdo->prepare(SQL_CHANGE_PHOTO);
+        $res->execute([
+            ':login' => $_SESSION['login'],
+            ':logo' => $photo
+        ]);
+        header("location:profile.php?change=logo");
+    }
+    else {
+        $photo = '../foto/' . $_GET['photo'];
+        $res = $pdo->prepare(SQL_CHANGE_PHOTO);
+        $res->execute([
+            ':login' => $_SESSION['login'],
+            ':logo' => $photo
+        ]);
+        header("location:profile.php?change=logo");
+    }
+} //change avatar php
+?>
+
+<?php
+if (isset($_GET['photo_del'])) {
+    $flag = 0;
+    $photo = '../foto/' . $_GET['photo_del'];
+    $res = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
+    $res->execute([$_SESSION['login']]);
+    foreach ($res as $row) {
+        if (!strcmp($row['logo'], $photo)) {
+            $flag = 1;
+        }
+    }
+    if ($flag) {
+        $pho = '../img/default-avatar.png';
+        $del = $_GET['photo_del'];
+        $res = $pdo->prepare(SQL_CHANGE_PHOTO);
+        $res->execute([
+            ':login' => $_SESSION['login'],
+            ':logo' => $pho
+        ]);
+        $stmt = $pdo->prepare(SQL_DELETE_IMG);
+        $stmt->execute([$del]);
+        header("location:profile.php?change=photo");
+    }
+    else {
+        $del = $_GET['photo_del'];
+        $stmt = $pdo->prepare(SQL_DELETE_IMG);
+        $stmt->execute([$del]);
+        header("location:profile.php?change=photo");
+    }
+    unlink($photo);
+} //delete photo php
+?>
+
+<?php if (isset($_GET['change']) && $_GET['change'] == "passwd") : ?>
+    <div id="password_block" class="block"><!--change password-->
+        <form method="POST" action="profile.php?change=passwd" class="change_password">
+            <?php
+            if (isset($_POST['submit']) && (isset($_POST['old_pw']) && $_POST['old_pw'] !== "") &&
+                (isset($_POST['new_pw1']) && $_POST['new_pw1'] !== "") &&
+                (isset($_POST['new_pw2']) && $_POST['new_pw2'] !== "")) {
+                $flag = 0;
+                $error = array();
+                $old_pw = hash("whirlpool", $_POST['old_pw']);
+                $new_pw1 = $_POST['new_pw1'];
+                $new_pw2 = $_POST['new_pw2'];
+                $res = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
+                $res->execute([$_SESSION['login']]);
+                if ($new_pw1 !== $_POST['old_pw']) {
+                    foreach ($res as $row) {
+                        if (!(strcmp($row['password'], $old_pw))) {
+                            $flag++;
+                        }
+                    }
+                    if (!$flag) {
+                        $error[] = "Wrong password";
+                    }
+                    if (strcmp($new_pw1, $new_pw2)) {
+                        $error[] = "Wrong confirm password";
+                    } else {
+                        $flag++;
+                    }
+                    if ($flag == 2) {
+                        $pass = hash("whirlpool", $new_pw1);
+                        $stmt = $pdo->prepare(SQL_UPDATE_PASSWORD);
+                        $stmt->execute([
+                            ':login' => $_SESSION['login'],
+                            ':password' => $pass
+                        ]);
+                        echo '<div style="color: green;">Your password update</div>'
+                            . '<script> var ele = document.getElementById("password_block");ele.style.display = \'block\';</script>';
+                    } else {
+                        echo '<div style="color: red;">' . array_shift($error) . '</div>'.
+                            '<script> var elem = document.getElementById("password_block");'.
+                            'elem.style.display = \'block\';</script>';
+                    }
+                }
+                else {
+                    echo '<div style="color: red;">New amd old passwords are the same</div>'.
+                        '<script> var elem = document.getElementById("password_block");'.
+                        'elem.style.display = \'block\';</script>';
+                }
+            }
+            ?>
+            <input type="password" name="old_pw" value="" required placeholder="old password"><br>
+            <input type="password" name="new_pw1" value="" required placeholder="new password"><br>
+            <input type="password" name="new_pw2" value="" required placeholder="conform password"><br>
+            <input type="submit" name="submit" value="OK">
+        </form>
+    </div> <!--change password-->
+<?php endif; ?>
+
+<?php if (isset($_GET['change']) && $_GET['change'] == "logo") : ?>
+    <div id="change_logo" class="block">
+        <div style="color: white; font-size: 25px"> Your photo</div>
+        <?php
+        $stmt = $pdo->prepare(SQL_GET_USER_IMG);
+        $stmt->execute([$_SESSION['login']]);
+        foreach ($stmt as $row) {
+            echo '<div style="position:relative; display: inline-block;">'.
+                '<img class="image" src="'.$row['path'].'"><a href="profile.php?change=logo&photo='.$row['name'].'"><img src="../img/select.png" class="delete_img"></a></div>';
+        }
+        ?>
+        <?php
+        $stmt = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
+        $stmt->execute([$_SESSION['login']]);
+        $flag = 1;
+        foreach ($stmt as $row) {
+            if (!strcmp($row['logo'], "../img/default-avatar.png")) {
+                $flag = 0;
+            }
+        }
+        if ($flag) {
+            echo '<div class="default"><a href="profile.php?change=logo&photo=default">Set default avatar</a></div>';
+        }
+        ?>
+    </div> <!--change avatar div-->
+<?php endif; ?>
+
+<?php if (isset($_GET['change']) && $_GET['change'] == "photo") : ?>
+    <div id="delete_photo" class="block">
+        <?php
+        $stmt = $pdo->prepare(SQL_GET_USER_IMG);
+        $stmt->execute([$_SESSION['login']]);
+        foreach ($stmt as $row) {
+            echo '<div style="position:relative; display: inline-block;">'.
+                '<img class="image" src="'.$row['path'].'"><a href="profile.php?change=photo&photo_del='.$row['name'].'"><img src="../img/close.gif" class="delete_img"></a></div>';
+        }
+        ?>
+    </div> <!--delete photo div-->
+<?php endif; ?>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -28,40 +182,18 @@
         ?>
     </div>
 </div>
+
 <div class="profile_settings">
     <ul class="select_section" type="none">
-        <li id="ch_password">Change password</li>
-        <li id="logo">Change logo</li>
-        <li id="delete_photo">Delete photo</li>
+        <li><a href="profile.php?change=passwd">Change password</a></li>
+        <li><a href="profile.php?change=logo">Change avatar</a></li>
+        <li><a href="profile.php?change=photo">Delete photo</a></li>
     </ul>
-</div>
-<div id="password_block">
-    <form method="post" action="profile.php" class="change_password">
-        <?php
-        if (isset($_POST['submit'])) {
-            $old_pw = hash("whirlpool", $_POST['old_pw']);
-            $new_pw1 = $_POST['new_pw1'];
-            $new_pw2 = $_POST['new_pw2'];
-            echo '<script> var elem = document.getElementById("password_block");elem.style.display = \'block\';</script>';
-        }
-        ?>
-        <input type="password" name="old_pw" value="" required placeholder="old password"><br>
-        <input type="password" name="new_pw1" value="" required placeholder="new password"><br>
-        <input type="password" name="new_pw2" value="" required placeholder="conform password"><br>
-        <input type="submit" name="submit">
-    </form>
 </div>
 <div class="footer">
     <hr>
-    <p>&copy;rkonoval 2017</p>
+    <p>Camagru &copy;rkonoval 2017</p>
 </div>
 <script src="../js/js.js"></script>
-<script>
-    var password = document.getElementById("ch_password");
-    password.onclick = function () {
-        var elem = document.getElementById("password_block");
-        elem.style.display = 'block';
-    };
-</script>
 </body>
 </html>

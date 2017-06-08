@@ -81,7 +81,7 @@ const SQL_GET_ALL_IMG = '
 ';
 
 const SQL_GET_USER_IMG = '
-    SELECT path FROM images WHERE login = ?  ORDER BY id DESC
+    SELECT * FROM images WHERE login = ?  ORDER BY id DESC
 ';
 
 const SQL_SET_USER_LOGO = '
@@ -96,7 +96,7 @@ const SQL_GET_COMMENT = '
     SELECT * FROM comment WHERE img = ? ORDER BY id DESC
 ';
 
-const SQL_GET_LIKE = '
+const SQL_GET_ALL_LIKES = '
     SELECT * FROM likes WHERE img = ?
 ';
 
@@ -105,7 +105,23 @@ const SQL_ADD_LIKE = '
 ';
 
 const SQL_DELETE_LIKE = '
-    DELETE FROM likes WHERE (img = :img, login = :login)
+    DELETE FROM likes WHERE (id = ?)
+';
+
+const SQL_GET_USER_BY_LOGIN = '
+    SELECT * FROM log_pas WHERE login = ?
+';
+
+const SQL_UPDATE_PASSWORD = '
+    UPDATE log_pas SET password = :password WHERE login = :login
+';
+
+const SQL_CHANGE_PHOTO = '
+    UPDATE log_pas SET logo = :logo WHERE login = :login
+';
+
+const SQL_DELETE_IMG = '
+    DELETE FROM images WHERE name = ?
 ';
 
 ?>
