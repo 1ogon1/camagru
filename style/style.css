@@ -343,6 +343,15 @@ h3 {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+.block_pass {
+    position: absolute;
+    top: 230px;
+    left: 550px;
+    width: 700px;
+    height: 500px;
+    text-align: center;
+}
+
 .block {
     position: absolute;
     top: 230px;

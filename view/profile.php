@@ -54,60 +54,58 @@ if (isset($_GET['photo_del'])) {
 }
 ?> <!--delete photo php-->
 
-<?php if (isset($_GET['change']) && $_GET['change'] == "passwd") : ?>
-    <div id="password_block" class="block"><!--change password-->
-        <form method="POST" action="profile.php?change=passwd" class="change_password">
-            <?php
-            if (isset($_POST['submit']) && (isset($_POST['old_pw']) && $_POST['old_pw'] !== "") &&
-                (isset($_POST['new_pw1']) && $_POST['new_pw1'] !== "") &&
-                (isset($_POST['new_pw2']) && $_POST['new_pw2'] !== "")
-            ) {
-                $flag = 0;
-                $error = array();
-                $old_pw = hash("whirlpool", $_POST['old_pw']);
-                $new_pw1 = $_POST['new_pw1'];
-                $new_pw2 = $_POST['new_pw2'];
-                $res = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
-                $res->execute([$_SESSION['login']]);
-                if ($new_pw1 !== $_POST['old_pw']) {
-                    foreach ($res as $row) {
-                        if (!(strcmp($row['password'], $old_pw))) {
-                            $flag++;
-                        }
-                    }
-                    if (!$flag) {
-                        $error[] = "Wrong password";
-                    }
-                    if (strcmp($new_pw1, $new_pw2)) {
-                        $error[] = "Wrong confirm password";
-                    } else {
-                        $flag++;
-                    }
-                    if ($flag == 2) {
-                        $pass = hash("whirlpool", $new_pw1);
-                        $stmt = $pdo->prepare(SQL_UPDATE_PASSWORD);
-                        $stmt->execute([
-                            ':login' => $_SESSION['login'],
-                            ':password' => $pass
-                        ]);
-                        echo '<div style="color: green;">Your password update</div>'
-                            . '<script> var ele = document.getElementById("password_block");ele.style.display = \'block\';</script>';
-                    } else {
-                        echo '<div style="color: red;">' . array_shift($error) . '</div>' .
-                            '<script> var elem = document.getElementById("password_block");' .
-                            'elem.style.display = \'block\';</script>';
-                    }
-                } else {
-                    echo '<div style="color: red;">New amd old passwords are the same</div>' .
-                        '<script> var elem = document.getElementById("password_block");' .
-                        'elem.style.display = \'block\';</script>';
+<?php
+if (isset($_POST['submit'])) {
+    if (isset($_POST['submit']) && (isset($_POST['old_pw']) && $_POST['old_pw'] !== "") &&
+        (isset($_POST['new_pw1']) && $_POST['new_pw1'] !== "") &&
+        (isset($_POST['new_pw2']) && $_POST['new_pw2'] !== "")
+    ) {
+        $flag = 0;
+        $error = array();
+        $old_pw = hash("whirlpool", $_POST['old_pw']);
+        $new_pw1 = $_POST['new_pw1'];
+        $new_pw2 = $_POST['new_pw2'];
+        $res = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
+        $res->execute([$_SESSION['login']]);
+        if ($new_pw1 !== $_POST['old_pw']) {
+            foreach ($res as $row) {
+                if (!(strcmp($row['password'], $old_pw))) {
+                    $flag++;
                 }
             }
-            ?>
-            <input type="password" name="old_pw" value="" required placeholder="old password"><br>
-            <input type="password" name="new_pw1" value="" required placeholder="new password"><br>
-            <input type="password" name="new_pw2" value="" required placeholder="conform password"><br>
-            <input type="submit" name="submit" value="OK">
+            if (!$flag) {
+                $error[] = "Wrong password";
+            }
+            if (strcmp($new_pw1, $new_pw2)) {
+                $error[] = "Wrong confirm password";
+            } else {
+                $flag++;
+            }
+            if ($flag == 2) {
+                $pass = hash("whirlpool", $new_pw1);
+                $stmt = $pdo->prepare(SQL_UPDATE_PASSWORD);
+                $stmt->execute([
+                    ':login' => $_SESSION['login'],
+                    ':password' => $pass
+                ]);
+                echo '<div style="color: green;">Your password update</div>';
+            } else {
+                echo '<div style="color: red;">' . array_shift($error) . '</div>';
+            }
+        } else {
+            echo '<div style="color: red;">New and old passwords are the same</div>';
+        }
+    }
+}
+?> <!--change password php-->
+
+<?php if (isset($_GET['change']) && $_GET['change'] == "passwd") : ?>
+    <div id="password_block" class="block_pass">
+        <form method="POST" action="profile.php?change=passwd" class="change_password">
+            <input type="password" name="old_pw" value="" required placeholder="old password" class="in"><br>
+            <input type="password" name="new_pw1" value="" required placeholder="new password" class="in"><br>
+            <input type="password" name="new_pw2" value="" required placeholder="conform password" class="in"><br>
+            <input type="submit" name="submit" value="Change" class="button">
         </form>
     </div> <!--change password-->
 <?php endif; ?>
@@ -141,6 +139,7 @@ if (isset($_GET['photo_del'])) {
 
 <?php if (isset($_GET['change']) && $_GET['change'] == "photo") : ?>
     <div id="delete_photo" class="block">
+        <div style="color: white; font-size: 25px"> Your photo</div>
         <?php
         $stmt = $pdo->prepare(SQL_GET_USER_IMG);
         $stmt->execute([$_SESSION['login']]);
@@ -160,6 +159,7 @@ if (isset($_GET['photo_del'])) {
     <link href="../style/style.css" rel="stylesheet">
 </head>
 <body>
+
 <div class="header">
     <div class="logo">
         <a href="galery.php" title="home"><img src="../img/logo3.png" class="web" alt="home"></a>
@@ -187,10 +187,13 @@ if (isset($_GET['photo_del'])) {
         <li><a href="profile.php?change=photo">Delete photo</a></li>
     </ul>
 </div>
+
 <div class="footer">
     <hr>
     <p>Camagru &copy;rkonoval 2017</p>
 </div>
+
 <script src="../js/js.js"></script>
+
 </body>
 </html>
