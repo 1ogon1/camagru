@@ -19,8 +19,8 @@ if (isset($_GET['photo'])) {
         ]);
         header("location:profile.php?change=logo");
     }
-} //change avatar php
-?>
+}
+?> <!--change avatar php-->
 
 <?php
 if (isset($_GET['photo_del'])) {
@@ -51,8 +51,8 @@ if (isset($_GET['photo_del'])) {
         header("location:profile.php?change=photo");
     }
     unlink($photo);
-} //delete photo php
-?>
+}
+?> <!--delete photo php-->
 
 <?php if (isset($_GET['change']) && $_GET['change'] == "passwd") : ?>
     <div id="password_block" class="block"><!--change password-->
@@ -162,13 +162,12 @@ if (isset($_GET['photo_del'])) {
 <body>
 <div class="header">
     <div class="logo">
-        <a href="index.php" title="home"><img src="../img/couv_web.png" class="web" alt="home"></a>
+        <a href="galery.php" title="home"><img src="../img/logo3.png" class="web" alt="home"></a>
     </div>
     <div class="block_menu">
         <ul type="none" class="menu">
             <li><?php echo $_SESSION['login']; ?></li>
             <li><a href="logout.php">Loguot</a></li>
-<!--            <li><a href="index.php">Home</a></li>-->
             <li><a href="galery.php">Galery</a></li>
         </ul>
         <?php
@@ -179,7 +178,7 @@ if (isset($_GET['photo_del'])) {
         }
         ?>
     </div>
-</div>
+</div> <!-- header div -->
 
 <div class="profile_settings">
     <ul class="select_section" type="none">

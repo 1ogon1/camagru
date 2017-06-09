@@ -98,7 +98,7 @@ if (isset($_POST['add'])) {
     <body>
     <div class="header">
         <div class="logo">
-            <a href="index.php" title="home"><img src="../img/couv_web.png" class="web" alt="home"></a>
+            <a href="galery.php" title="home"><img src="../img/logo3.png" class="web" alt="home"></a>
         </div>
         <div class="block_menu">
             <ul type="none" class="menu">
