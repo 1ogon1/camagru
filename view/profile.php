@@ -10,8 +10,7 @@ if (isset($_GET['photo'])) {
             ':logo' => $photo
         ]);
         header("location:profile.php?change=logo");
-    }
-    else {
+    } else {
         $photo = '../foto/' . $_GET['photo'];
         $res = $pdo->prepare(SQL_CHANGE_PHOTO);
         $res->execute([
@@ -45,8 +44,7 @@ if (isset($_GET['photo_del'])) {
         $stmt = $pdo->prepare(SQL_DELETE_IMG);
         $stmt->execute([$del]);
         header("location:profile.php?change=photo");
-    }
-    else {
+    } else {
         $del = $_GET['photo_del'];
         $stmt = $pdo->prepare(SQL_DELETE_IMG);
         $stmt->execute([$del]);
@@ -62,7 +60,8 @@ if (isset($_GET['photo_del'])) {
             <?php
             if (isset($_POST['submit']) && (isset($_POST['old_pw']) && $_POST['old_pw'] !== "") &&
                 (isset($_POST['new_pw1']) && $_POST['new_pw1'] !== "") &&
-                (isset($_POST['new_pw2']) && $_POST['new_pw2'] !== "")) {
+                (isset($_POST['new_pw2']) && $_POST['new_pw2'] !== "")
+            ) {
                 $flag = 0;
                 $error = array();
                 $old_pw = hash("whirlpool", $_POST['old_pw']);
@@ -94,14 +93,13 @@ if (isset($_GET['photo_del'])) {
                         echo '<div style="color: green;">Your password update</div>'
                             . '<script> var ele = document.getElementById("password_block");ele.style.display = \'block\';</script>';
                     } else {
-                        echo '<div style="color: red;">' . array_shift($error) . '</div>'.
-                            '<script> var elem = document.getElementById("password_block");'.
+                        echo '<div style="color: red;">' . array_shift($error) . '</div>' .
+                            '<script> var elem = document.getElementById("password_block");' .
                             'elem.style.display = \'block\';</script>';
                     }
-                }
-                else {
-                    echo '<div style="color: red;">New amd old passwords are the same</div>'.
-                        '<script> var elem = document.getElementById("password_block");'.
+                } else {
+                    echo '<div style="color: red;">New amd old passwords are the same</div>' .
+                        '<script> var elem = document.getElementById("password_block");' .
                         'elem.style.display = \'block\';</script>';
                 }
             }
@@ -121,8 +119,8 @@ if (isset($_GET['photo_del'])) {
         $stmt = $pdo->prepare(SQL_GET_USER_IMG);
         $stmt->execute([$_SESSION['login']]);
         foreach ($stmt as $row) {
-            echo '<div style="position:relative; display: inline-block;">'.
-                '<img class="image" src="'.$row['path'].'"><a href="profile.php?change=logo&photo='.$row['name'].'"><img src="../img/select.png" class="delete_img"></a></div>';
+            echo '<div style="position:relative; display: inline-block;">' .
+                '<img class="image" src="' . $row['path'] . '"><a href="profile.php?change=logo&photo=' . $row['name'] . '"><img src="../img/select.png" class="delete_img"></a></div>';
         }
         ?>
         <?php
@@ -147,8 +145,8 @@ if (isset($_GET['photo_del'])) {
         $stmt = $pdo->prepare(SQL_GET_USER_IMG);
         $stmt->execute([$_SESSION['login']]);
         foreach ($stmt as $row) {
-            echo '<div style="position:relative; display: inline-block;">'.
-                '<img class="image" src="'.$row['path'].'"><a href="profile.php?change=photo&photo_del='.$row['name'].'"><img src="../img/close.gif" class="delete_img"></a></div>';
+            echo '<div style="position:relative; display: inline-block;">' .
+                '<img class="image" src="' . $row['path'] . '"><a href="profile.php?change=photo&photo_del=' . $row['name'] . '"><img src="../img/close.gif" class="delete_img"></a></div>';
         }
         ?>
     </div> <!--delete photo div-->
@@ -170,14 +168,14 @@ if (isset($_GET['photo_del'])) {
         <ul type="none" class="menu">
             <li><?php echo $_SESSION['login']; ?></li>
             <li><a href="logout.php">Loguot</a></li>
-            <li><a href="index.php">Home</a></li>
+<!--            <li><a href="index.php">Home</a></li>-->
             <li><a href="galery.php">Galery</a></li>
         </ul>
         <?php
         $login = $_SESSION['login'];
         $res = $pdo->query("SELECT logo FROM log_pas WHERE login = '$login'", PDO::FETCH_ASSOC);
         foreach ($res as $row) {
-            echo '<a href="profile.php"><img src="'.$row['logo'].'" class="avatar"></a>';
+            echo '<a href="profile.php"><img src="' . $row['logo'] . '" class="avatar"></a>';
         }
         ?>
     </div>

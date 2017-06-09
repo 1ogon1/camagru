@@ -17,6 +17,6 @@ if ((isset($_GET['login']) && $_GET['login'] !== "") && (isset($_GET['active']) 
             }
         }
     }
-    header("location:index.php");
+    header("location:index.php?active=true");
 }
 ?>
