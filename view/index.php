@@ -173,7 +173,7 @@ if (isset($_POST['regi_ster'])) {
             <br/>
             <input type="password" name="password" value="" placeholder="password" required class="in">
             <br/>
-            <a href="reset_pw.php">Forgot password?</a>
+            <a href="reset_pw.php" class="forgot">Forgot password?</a>
             <br/>
             <input type="submit" name="log_in" value="Login" class="button">
         </form>

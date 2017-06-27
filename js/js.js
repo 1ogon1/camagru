@@ -7,8 +7,11 @@ function camera() {
     var canvas = document.getElementById('canvas');
     var video = document.getElementById('video');
     var button = document.getElementById('button');
+    var save = document.getElementById('save');
+    var clear = document.getElementById('canсel');
     var hat = document.getElementById("hat");
     var rama = document.getElementById("rama");
+    var center = document.getElementById('center');
     var context = canvas.getContext('2d');
     var videoStreamUrl = false;
     var captureMe = function () {
@@ -19,6 +22,14 @@ function camera() {
             context.drawImage(hat, img_left, img_top, img_width, img_height);
             context.drawImage(rama, 0, 0, video.width, video.height);
         }
+
+        button.style.display = 'none';
+        save.style.display = 'inline-block';
+        clear.style.display = 'inline-block';
+
+        center.style.textAlign = 'center';
+    };
+    var save_func = function () {
         var base64dataUrl = canvas.toDataURL('image/png');
         context.setTransform(1, 0, 0, 1, 0, 0); // убираем все кастомные трансформации canvas
         var xhr = new XMLHttpRequest();
@@ -26,8 +37,25 @@ function camera() {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send('image=' + base64dataUrl);
 
+        button.style.display = 'block';
+        save.style.display = 'none';
+        clear.style.display = 'none';
+
+        center.style.textAlign = 'center';
+        context.clearRect(0, 0 , video.width, video.height);
+    };
+    var clear_canvas = function () {
+        context.clearRect(0, 0 , video.width, video.height);
+
+        button.style.display = 'block';
+        save.style.display = 'none';
+        clear.style.display = 'none';
+
+        center.style.textAlign = 'center';
     };
     button.addEventListener('click', captureMe);
+    save.addEventListener('click', save_func);
+    clear.addEventListener('click', clear_canvas);
     navigator.getUserMedia = navigator.webkitGetUserMedia;
     window.URL.createObjectURL = window.URL.createObjectURL;
     navigator.getUserMedia({video: true}, function (stream) {
@@ -38,10 +66,25 @@ function camera() {
     });
 }
 
-function create_img(path) {
-    var image = document.getElementById("hat");
-    image.src = path;
-    image.style.display = 'block';
+function create_img(path, type) {
+    if (type === 1) {
+        var hat = document.getElementById("hat");
+        hat.src = path;
+        hat.style.display = 'block';
+    }
+    else if (type === 2) {
+        var rama = document.getElementById("rama");
+        rama.src = path;
+        rama.style.display = 'block';
+    }
+    else if (type === 3) {
+        var hat = document.getElementById("hat");
+        var rama = document.getElementById("rama");
+        hat.src = "";
+        rama.src = "";
+        hat.style.display = 'none';
+        rama.style.display = 'none';
+    }
 }
 
 function create_back(path) {

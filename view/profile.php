@@ -247,7 +247,7 @@ if (isset($_GET['photo_del_adm'])) {
 		}
 		?>
     </div>
-<?php endif; ?>
+<?php endif; ?> <!--delete photo div by adm-->
 
 <!DOCTYPE html>
 <html lang="ru">

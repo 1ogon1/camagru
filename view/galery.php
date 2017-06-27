@@ -111,108 +111,91 @@ if (isset($_POST['add'])) {
     </div>
 <?php endif; ?> <!-- show image -->
 
-    <!DOCTYPE html>
-    <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <title>Galery</title>
-        <link href="../style/style.css" rel="stylesheet" type="text/css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-    <div class="header">
-        <div class="logo">
-            <a href="galery.php" title="home"><img src="../img/logo3.png" class="web" alt="home"></a>
-        </div>
-        <div class="block_menu">
-            <ul type="none" class="menu">
-                <li><?php echo $_SESSION['login']; ?></li>
-                <li><a href="logout.php">Loguot</a></li>
-                <li><a href="camera.php">Camera</a></li>
-            </ul>
-			<?php
-			$login = $_SESSION['login'];
-			$res = $pdo->query("SELECT logo FROM log_pas WHERE login = '$login'", PDO::FETCH_ASSOC);
-			foreach ($res as $row) {
-				echo '<a href="profile.php?page="><img src="' . $row['logo'] . '" class="avatar"></a>';
-			}
-			?>
-        </div>
-    </div> <!-- header -->
-
-    <!--<div class="download">-->
-    <!--    <form action="galery.php" method="post" enctype="multipart/form-data">-->
-    <!--        <input type="file" name="uploadfile">-->
-    <!--        <input type="submit" value="submit"></form>-->
-    <!--</div>-->
-
-    <div class="galery">
-        <h3>All images</h3>
-		<?php
-		$page = 1;
-		if (isset($_GET['page'])) {
-			$page = $_GET['page'];
-		} else {
-			$page = 1;
-		}
-		$res = $pdo->query("SELECT * FROM images ORDER BY id DESC");
-		$res->execute();
-		$images = $res->fetchAll();
-		$img_count = count($images);
-		$i = $page * 20 - 20;
-		$j = $page * 20;
-		$num_page = 1;
-		echo '<div class="page">';
-		if ($img_count > 20) {
-			echo '<p style=" display: inline-block; color: white; position: relative; bottom: 0px; right: 10px;">Select page</p>';
-			while ($img_count > 0) {
-				echo '<a href="galery.php?page=' . $num_page . '">' . $num_page . '</a>';
-				$num_page++;
-				$img_count -= 20;
-			}
-		}
-		echo '</div>';
-		$img_count = count($images);
-		while ($i < $j && $i < $img_count) {
-			$get_img = get_img($images[$i]['id']);
-			echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $get_img . '"><img src="../foto/' . $get_img . '"></a></div>';
-			$i++;
-		}
-		?>
-    </div> <!-- all images -->
-
-    <div class="user_img">
-        <h3><?php echo $_SESSION['login']; ?>`s images</h3>
-		<?php
-		$stmt = $pdo->prepare(SQL_GET_USER_IMG);
-		$stmt->execute([$_SESSION['login']]);
-		$i = 1;
-		foreach ($stmt as $row) {
-			if ($i > 9) {
-				exit();
-			}
-			echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $row['name'] . '"><img src="' . $row['path'] . '"></a></div>';
-			$i++;
-		}
-		?>
-    </div> <!-- user images -->
-
-    <div class="footer">
-        <hr>
-        <p>Camagru &copy;rkonoval 2017</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Galery</title>
+    <link href="../style/style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="header">
+    <div class="logo">
+        <a href="galery.php" title="home"><img src="../img/logo3.png" class="web" alt="home"></a>
     </div>
-    <script src="../js/js.js"></script>
+    <div class="block_menu">
+        <ul type="none" class="menu">
+            <li><?php echo $_SESSION['login']; ?></li>
+            <li><a href="logout.php">Loguot</a></li>
+            <li><a href="camera.php">Camera</a></li>
+        </ul>
+		<?php
+		$login = $_SESSION['login'];
+		$res = $pdo->query("SELECT logo FROM log_pas WHERE login = '$login'", PDO::FETCH_ASSOC);
+		foreach ($res as $row) {
+			echo '<a href="profile.php?page="><img src="' . $row['logo'] . '" class="avatar"></a>';
+		}
+		?>
+    </div>
+</div> <!-- header -->
 
-    </body>
-    </html>
+<div class="galery">
+    <h3>All images</h3>
+	<?php
+	$page = 1;
+	if (isset($_GET['page'])) {
+		$page = $_GET['page'];
+	} else {
+		$page = 1;
+	}
+	$res = $pdo->query("SELECT * FROM images ORDER BY id DESC");
+	$res->execute();
+	$images = $res->fetchAll();
+	$img_count = count($images);
+	$i = $page * 20 - 20;
+	$j = $page * 20;
+	$num_page = 1;
+	echo '<div class="page">';
+	if ($img_count > 20) {
+		echo '<p style=" display: inline-block; color: white; position: relative; bottom: 0px; right: 10px;">Select page</p>';
+		while ($img_count > 0) {
+			echo '<a href="galery.php?page=' . $num_page . '">' . $num_page . '</a>';
+			$num_page++;
+			$img_count -= 20;
+		}
+	}
+	echo '</div>';
+	$img_count = count($images);
+	while ($i < $j && $i < $img_count) {
+		$get_img = get_img($images[$i]['id']);
+		echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $get_img . '"><img src="../foto/' . $get_img . '"></a></div>';
+		$i++;
+	}
+	?>
+</div> <!-- all images -->
 
-<?php
-//if ($_POST['submit']) {
-//    $uploaddir = '../foto/';
-//    $uploadfile = $uploaddir . basename($_FILES['uploadfile']['name']);
-//
-//    if (copy($_FILES['uploadfile']['tmp_name'], $uploadfile)) {
-//        echo "<h3>Файл успешно загружен на сервер</h3>";
-//    }
-//}
-?>
+<div class="user_img">
+    <h3><?php echo $_SESSION['login']; ?>`s images</h3>
+	<?php
+	$stmt = $pdo->prepare(SQL_GET_USER_IMG);
+	$stmt->execute([$_SESSION['login']]);
+	$i = 1;
+	foreach ($stmt as $row) {
+		if ($i > 9) {
+			exit();
+		}
+		echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $row['name'] . '"><img src="' . $row['path'] . '"></a></div>';
+		$i++;
+	}
+	?>
+</div> <!-- user images -->
+
+<div class="footer">
+    <hr>
+    <p>Camagru &copy;rkonoval 2017</p>
+</div>
+<script src="../js/js.js"></script>
+
+</body>
+</html>

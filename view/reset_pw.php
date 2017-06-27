@@ -4,6 +4,27 @@
 }
 ?>
 
+<?php
+if (isset($_POST['sub_reset'])) {
+    $login = $_POST['login'];
+}
+?>
+
+<?php
+if (isset($_POST['submit'])) {
+	$email = $_POST['email'];
+	$headers = "Content-Type: text/html; charset=utf-8" . "\r\n";
+	$subject = "Camagru Reset password";
+	$r1 = "<html><head><style>.button { background-color: #646464 ; border: none;color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;}</style><head>";
+	$r2 = "<body><h1>Camagru Reset password</h1>";
+	$r3 = "<article><p>To reset your passwor please click on button below</p>";
+	$r4 = "<a href='http://localhost:8080/camagru/view/reset_pw.php?reset=ok' class='button'>Activate</a></article>";
+	$r5 = "<p>Best regards, Camagru Dev</p></body></html>";
+	$message = $r1 . $r2 . $r3 . $r4 . $r5;
+	mail($email, $subject, $message, $headers);
+}
+?> <!-- reset password php -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -23,12 +44,24 @@
         </ul>
     </div>
 </div>
+<?php if (isset($_GET['reset'])) : ?>
+    <form action="reset_pw.php?reset=ok" method="post" class="index_login">
+        <input type="text" name="login" value="" placeholder="login" class="in" required>
+        <br>
+        <input type="password" name="password" value="" placeholder="password" class="in" required>
+        <br>
+        <input type="password" name="conf_password" value="" placeholder="confirm password" class="in" required>
+        <br>
+        <input type="submit" name="sub_reset" value="Login" class="button">
+    </form>
+<?php else : ?>
 <form action="reset_pw.php" method="post" class="index_login">
     <p>Enter your email</p>
     <input type="email" name="email" placeholder="example@email.com" class="in" required>
     <br>
     <input type="submit" name="submit" value="Continue" class="button">
 </form>
+<?php endif; ?>
 <div class="footer">
     <hr>
     <p>Camagru &copy;rkonoval 2017</p>

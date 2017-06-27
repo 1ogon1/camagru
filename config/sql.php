@@ -59,6 +59,14 @@ const SQL_CREATE_TABLE_MASKS = '
       )
 ';
 
+const SQL_RESER_PASSWORD = '
+	CREATE TABLE IF NOT EXISTS reset (
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      path VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      )
+';
+
 const SQL_ADD_MASK_1 = "
 	INSERT INTO masks (path, name, type) VALUES ('../img/beard.png', 'beard.png', 1)
 ";
