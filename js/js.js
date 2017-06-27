@@ -8,6 +8,7 @@ function camera() {
     var video = document.getElementById('video');
     var button = document.getElementById('button');
     var hat = document.getElementById("hat");
+    var rama = document.getElementById("rama");
     var context = canvas.getContext('2d');
     var videoStreamUrl = false;
     var captureMe = function () {
@@ -16,6 +17,7 @@ function camera() {
         context.drawImage(video, 0, 0, video.width, video.height);
         if (hat != null) {
             context.drawImage(hat, img_left, img_top, img_width, img_height);
+            context.drawImage(rama, 0, 0, video.width, video.height);
         }
         var base64dataUrl = canvas.toDataURL('image/png');
         context.setTransform(1, 0, 0, 1, 0, 0); // убираем все кастомные трансформации canvas

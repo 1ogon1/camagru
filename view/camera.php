@@ -20,13 +20,23 @@ if (isset($_POST['image'])) {
     add_img_to_base($_SESSION['login'], $img_name, $file);
     header("Location: camera.php");
 }
-?>
+?> <!-- add image php -->
+
+<?php if (isset($_GET['admin'])) {
+	$admin = $_GET['admin'];
+	if ($admin === "admin") {
+		header("location:admin.php");
+	}
+}
+?> <!-- go to admin page -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Camera</title>
     <link href="../style/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body onload="camera()">
 <div class="header">
@@ -50,13 +60,24 @@ if (isset($_POST['image'])) {
     </div>
 </div>
 <div class="filter">
-    <div onclick="create_img('../img/hat.png')" class="click"><img src="../img/hat.png"></div>
-    <div onclick="create_img('../img/beard.png')" class="click"><img src="../img/beard.png"></div>
-    <div onclick="create_img('../img/beard2.png')" class="click"><img src="../img/beard2.png"></div>
-    <div onclick="create_img('../img/snap.png')" class="click"><img src="../img/snap.png"></div>
-    <div onclick="create_img('../img/sunglases.png')" class="click"><img src="../img/sunglases.png"></div>
-    <div onclick="create_back('../img/flowers.png')" class="click"><img src="../img/flowers.png"></div>
-    <div onclick="create_back('../img/Vintage.png')" class="click"><img src="../img/Vintage.png"></div>
+    <?php
+    $res = $pdo->prepare(SQL_SELECT_ALL_MASKS);
+    $res->execute();
+    foreach ($res as $row) {
+        if ($row['type'] == 1) {
+			echo '<div onclick="create_img(\''.$row[path].'\')" class="click"><img src="'.$row[path].'"></div>';
+		}
+		else if ($row['type'] == 2) {
+			echo '<div onclick="create_back(\''.$row[path].'\')" class="click"><img src="'.$row[path].'"></div>';
+        }
+    }
+    ?>
+<!--    <div onclick="create_img('../img/hat.png')" class="click"><img src="../img/hat.png"></div>-->
+<!--    <div onclick="create_img('../img/beard.png')" class="click"><img src="../img/beard.png"></div>-->
+<!--    <div onclick="create_img('../img/beard2.png')" class="click"><img src="../img/beard2.png"></div>-->
+<!--    <div onclick="create_img('../img/snap.png')" class="click"><img src="../img/snap.png"></div>-->
+<!--    <div onclick="create_img('../img/sunglases.png')" class="click"><img src="../img/sunglases.png"></div>-->
+<!--    <div onclick="create_back('../img/Vintage.png')" class="click"><img src="../img/Vintage.png"></div>-->
 </div>
 <div class="camera">
     <div class="item" id="add_img">

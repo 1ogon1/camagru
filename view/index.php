@@ -1,10 +1,23 @@
 <?php require_once "../config/setup.php" ?>
+<?php if (isset($_SESSION['login'])) {
+    header("location:galery.php");
+}
+?>
+
+<?php if (isset($_GET['admin'])) {
+	$admin = $_GET['admin'];
+	if ($admin === "admin") {
+		header("location:admin.php");
+	}
+}
+?> <!-- go to admin page -->
 
 <?php
 if (isset($_POST['log_in'])) {
     if ((isset($_POST['login']) && $_POST['login'] !== "") && (isset($_POST['password']) && $_POST['password'] !== "")) {
         $login = $_POST['login'];
         $find = 0;
+        $id = 0;
         $errors = array();
         $passwd = hash("whirlpool", $_POST['password']);
         $res = $pdo->query(SQL_GET_LOGIN, PDO::FETCH_ASSOC);
@@ -13,6 +26,10 @@ if (isset($_POST['log_in'])) {
                 if (!strcmp($row['password'], $passwd)) {
                     if (!strcmp($row['active'], "1")) {
                         $find = 1;
+                        $id = $row['id'];
+                        if ($row['admin'] == 1) {
+                            $_SESSION['user_admin'] = 1;
+                        }
                     } else {
                         $errors[] = "Account is not activate.";
                     }
@@ -26,6 +43,7 @@ if (isset($_POST['log_in'])) {
         }
         if ($find === 1) {
             $_SESSION['login'] = $_POST['login'];
+            $_SESSION['id_user'] = $id;
             header("location:galery.php");
         } else {
             echo '<div class="wrong">' . array_shift($errors) . '</div>' .
@@ -40,7 +58,8 @@ if (isset($_POST['log_in'])) {
 if (isset($_POST['regi_ster'])) {
     if ((isset($_POST['logon']) && $_POST['logon'] !== "") &&
         (isset($_POST['password']) && $_POST['password'] !== "") &&
-        (isset($_POST['conf_password']) && $_POST['conf_password'] !== "")
+        (isset($_POST['conf_password']) && $_POST['conf_password'] !== "")  &&
+        (isset($_POST['email']) && $_POST['email'] !== "")
     ) {
         try {
             require_once "../config/setup.php";
@@ -64,7 +83,9 @@ if (isset($_POST['regi_ster'])) {
                 $stmt->execute([
                     $_POST['logon'],
                     $passwd,
+					$_POST['email'],
                     $default,
+                    0,
                     0
                 ]);
                 $login = hash("md5", $_POST['logon']);
@@ -73,7 +94,7 @@ if (isset($_POST['regi_ster'])) {
                     $_POST['logon'],
                     $login
                 ]);
-                $email = 'konovalenkoruslan@gmail.com';
+                $email = $_POST['email'];
                 $headers = "Content-Type: text/html; charset=utf-8" . "\r\n";
                 $subject = "Camagru Account Activation";
                 $r1 = "<html><head><style>.button { background-color: #646464 ; border: none;color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;}</style><head>";
@@ -101,6 +122,7 @@ if (isset($_POST['regi_ster'])) {
     <meta charset="UTF-8">
     <title>Camagru</title>
     <link href="../style/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="header">
@@ -113,8 +135,8 @@ if (isset($_POST['regi_ster'])) {
                 <li><a href="index.php">Home</a></li>
             <?php else : ?>
                 <li><a href="index.php?register=true">Register</a></li>
+			<?php endif; ?>
         </ul>
-        <?php endif; ?>
     </div>
 </div>
 <?php if (!$_SESSION['login']) : ?>
@@ -125,6 +147,8 @@ if (isset($_POST['regi_ster'])) {
         <div class="register_form">
             <form action="index.php?register=true" method="post" class="form">
                 <input type="text" name="logon" value="" placeholder="login" class="in" required>
+                <br>
+                <input type="email" name="email" value="" placeholder="example@email.com" class="in" required>
                 <br>
                 <input type="password" name="password" value="" placeholder="password" class="in" required>
                 <br>
@@ -148,6 +172,8 @@ if (isset($_POST['regi_ster'])) {
             <input type="text" name="login" value="" placeholder="login" required class="in">
             <br/>
             <input type="password" name="password" value="" placeholder="password" required class="in">
+            <br/>
+            <a href="reset_pw.php">Forgot password?</a>
             <br/>
             <input type="submit" name="log_in" value="Login" class="button">
         </form>
