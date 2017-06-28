@@ -207,8 +207,8 @@ const SQL_DELETE_MASK = '
 	DELETE FROM masks WHERE name = ?
 ';
 
-//const SQL_GET_PATH_BY_ID = '
-//	SELECT path FROM masks WHERE id = ?
-//';
+const SQL_UPDATE_PW = '
+	UPDATE log_pas SET password = :password WHERE login = :login
+';
 
 ?>

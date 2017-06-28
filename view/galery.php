@@ -116,7 +116,7 @@ if (isset($_POST['add'])) {
 <head>
     <meta charset="UTF-8">
     <title>Galery</title>
-    <link href="../style/style.css" rel="stylesheet" type="text/css">
+    <link href="../style/style.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -182,10 +182,9 @@ if (isset($_POST['add'])) {
 	$stmt->execute([$_SESSION['login']]);
 	$i = 1;
 	foreach ($stmt as $row) {
-		if ($i > 9) {
-			exit();
+		if ($i <= 9) {
+			echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $row['name'] . '"><img src="' . $row['path'] . '"></a></div>';
 		}
-		echo '<div class="foto_galery"><a href="galery.php?page=' . $page . '&img=' . $row['name'] . '"><img src="' . $row['path'] . '"></a></div>';
 		$i++;
 	}
 	?>
@@ -195,7 +194,7 @@ if (isset($_POST['add'])) {
     <hr>
     <p>Camagru &copy;rkonoval 2017</p>
 </div>
-<script src="../js/js.js"></script>
 
+<script src="../js/js.js"></script>
 </body>
 </html>

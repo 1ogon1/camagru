@@ -187,16 +187,36 @@ if (isset($_GET['photo_del_adm'])) {
     <div id="change_logo" class="block">
         <div style="color: white; font-size: 25px"> Your photo</div>
 		<?php
-		$stmt = $pdo->prepare(SQL_GET_USER_IMG);
-		$stmt->execute([$_SESSION['login']]);
-		foreach ($stmt as $row) {
-			echo '<div style="position:relative; display: inline-block;">' .
-				'<img class="image" src="' . $row['path'] . '"><a href="profile.php?change=logo&photo=' . $row['name'] . '"><img src="../img/select.png" class="delete_img"></a></div>';
+		$page = 1;
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+		} else {
+			$page = 1;
 		}
-		?>
-		<?php
-		$stmt = $pdo->prepare(SQL_GET_USER_BY_LOGIN);
-		$stmt->execute([$_SESSION['login']]);
+		$res = $pdo->prepare(SQL_GET_USER_IMG);
+		$res->execute([$_SESSION['login']]);
+		$images = $res->fetchAll();
+		$img_count = count($images);
+		$i = $page * 20 - 20;
+		$j = $page * 20;
+		$num_page = 1;
+		echo '<div class="page">';
+		if ($img_count > 20) {
+			echo '<p style=" display: inline-block; color: white; position: relative; bottom: 0px; right: 10px;">Select page</p>';
+			while ($img_count > 0) {
+				echo '<a href="profile.php?change=logo&page=' . $num_page . '">' . $num_page . '</a>';
+				$num_page++;
+				$img_count -= 20;
+			}
+		}
+		echo '</div>';
+		$img_count = count($images);
+		while ($i < $j && $i < $img_count) {
+			$get_img = get_img($images[$i]['id']);
+			echo '<div style="position:relative; display: inline-block;">' .
+				'<img class="image" src="../foto/' . $get_img . '"><a href="profile.php?change=logo&photo=' . $get_img . '"><img src="../img/select.png" class="delete_img"></a></div>';
+			$i++;
+		}
 		?>
     </div>
     <div class="set_avatar">
@@ -225,11 +245,35 @@ if (isset($_GET['photo_del_adm'])) {
     <div id="delete_photo" class="block">
         <div style="color: white; font-size: 25px"> Your photo</div>
 		<?php
-		$stmt = $pdo->prepare(SQL_GET_USER_IMG);
-		$stmt->execute([$_SESSION['login']]);
-		foreach ($stmt as $row) {
+		$page = 1;
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+		} else {
+			$page = 1;
+		}
+		$res = $pdo->prepare(SQL_GET_USER_IMG);
+		$res->execute([$_SESSION['login']]);
+		$images = $res->fetchAll();
+		$img_count = count($images);
+		$i = $page * 20 - 20;
+		$j = $page * 20;
+		$num_page = 1;
+		echo '<div class="page">';
+		if ($img_count > 20) {
+			echo '<p style=" display: inline-block; color: white; position: relative; bottom: 0px; right: 10px;">Select page</p>';
+			while ($img_count > 0) {
+				echo '<a href="profile.php?change=photo&page=' . $num_page . '">' . $num_page . '</a>';
+				$num_page++;
+				$img_count -= 20;
+			}
+		}
+		echo '</div>';
+		$img_count = count($images);
+		while ($i < $j && $i < $img_count) {
+			$get_img = get_img($images[$i]['id']);
 			echo '<div style="position:relative; display: inline-block;">' .
-				'<img class="image" src="' . $row['path'] . '"><a href="profile.php?change=photo&photo_del=' . $row['name'] . '"><img src="../img/close.gif" class="delete_img"></a></div>';
+				'<img class="image" src="../foto/' . $get_img . '"><a href="profile.php?change=photo&photo_del=' . $get_img . '"><img src="../img/close.gif" class="delete_img"></a></div>';
+			$i++;
 		}
 		?>
     </div>
@@ -239,13 +283,38 @@ if (isset($_GET['photo_del_adm'])) {
     <div id="delete_photo" class="block">
         <div style="color: white; font-size: 25px"> All users photo</div>
 		<?php
-		$stmt = $pdo->prepare(SQL_GET_ALL_IMG);
-		$stmt->execute([$_SESSION['login']]);
-		foreach ($stmt as $row) {
+		$page = 1;
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+		} else {
+			$page = 1;
+		}
+		$res = $pdo->query("SELECT * FROM images ORDER BY id DESC");
+		$res->execute();
+		$images = $res->fetchAll();
+		$img_count = count($images);
+		$i = $page * 20 - 20;
+		$j = $page * 20;
+		$num_page = 1;
+		echo '<div class="page">';
+		if ($img_count > 20) {
+			echo '<p style=" display: inline-block; color: white; position: relative; bottom: 0px; right: 10px;">Select page</p>';
+			while ($img_count > 0) {
+				echo '<a href="profile.php?change=photo_adm&page=' . $num_page . '">' . $num_page . '</a>';
+				$num_page++;
+				$img_count -= 20;
+			}
+		}
+		echo '</div>';
+		$img_count = count($images);
+		while ($i < $j && $i < $img_count) {
+			$get_img = get_img($images[$i]['id']);
 			echo '<div style="position:relative; display: inline-block;">' .
-				'<img class="image" src="' . $row['path'] . '"><a href="profile.php?change=photo_adm&photo_del_adm=' . $row['name'] . '"><img src="../img/close.gif" class="delete_img"></a></div>';
+				'<img class="image" src="../foto/' . $get_img . '"><a href="profile.php?change=photo_adm&photo_del_adm=' . $get_img . '"><img src="../img/close.gif" class="delete_img"></a></div>';
+			$i++;
 		}
 		?>
+
     </div>
 <?php endif; ?> <!--delete photo div by adm-->
 
@@ -284,9 +353,9 @@ if (isset($_GET['photo_del_adm'])) {
         <li><a href="profile.php?change=passwd">Change password</a></li>
         <li><a href="profile.php?change=logo">Change avatar</a></li>
         <li><a href="profile.php?change=photo">Delete photo</a></li>
-        <?php if ($_SESSION['user_admin'] == 1) : ?>
-        <li><a href="profile.php?change=photo_adm">See all photo</a></li>
-        <?php endif; ?>
+		<?php if ($_SESSION['user_admin'] == 1) : ?>
+            <li><a href="profile.php?change=photo_adm">See all photo</a></li>
+		<?php endif; ?>
     </ul>
 </div>
 

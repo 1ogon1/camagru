@@ -439,7 +439,7 @@ h3 {
 
 .camera {
     position: absolute;
-    top: 350px;
+    top: 470px;
     left: 40%;
     width: auto;
     height: auto;
@@ -460,7 +460,7 @@ h3 {
 
 .filter {
     position: absolute;
-    top: 230px;
+    top: 350px;
     left: 30%;
     background-color: rgba(50, 50, 50, 0.5);
     padding: 5px;
@@ -652,4 +652,12 @@ h3 {
     color: white;
     margin: 0;
     padding: 0;
+}
+
+.camera_img {
+    position: absolute;
+    top: 230px;
+    left: 20%;
+    width: auto;
+    height: 100px;
 }

@@ -59,9 +59,20 @@ if (isset($_POST['image'])) {
 		?>
     </div>
 </div>
-<div class="">
+<div class="camera_img">
+	<?php
+	$stmt = $pdo->prepare(SQL_GET_USER_IMG);
+	$stmt->execute([$_SESSION['login']]);
+	$i = 1;
+	foreach ($stmt as $row) {
+		if ($i <= 9) {
+			echo '<img src="' . $row['path'] . '" style="width: 110px; height: 90px; margin-left: 5px;">';
+		}
+		$i++;
+	}
+	?>
+</div> <!-- user images -->
 
-</div>
 <div class="filter">
 	<?php
 	$res = $pdo->prepare(SQL_SELECT_ALL_MASKS);
@@ -89,6 +100,12 @@ if (isset($_POST['image'])) {
     <input type="submit" id="save" value="Save" class="button">
     <input type="submit" id="canсel" value="Canсel" class="button_clear">
 </div>
+
+<div class="footer">
+    <hr>
+    <p>Camagru &copy;rkonoval 2017</p>
+</div>
+
 <script src="../js/js.js"></script>
 </body>
 </html>
